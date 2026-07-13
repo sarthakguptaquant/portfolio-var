@@ -1,50 +1,70 @@
-# [Multiple-Equity Portfolio Value at Risk (VaR) Calculator](https://valueatriskmethod.streamlit.app/)
+<div align="center">
+<img src="assets/banner.svg" width="100%" alt="Portfolio VaR — interactive multi-equity value-at-risk calculator"/>
+<br/>
+<img src="https://img.shields.io/badge/python-3.11-1B3DFF?style=flat-square" alt="Python 3.11"/>
+<img src="https://img.shields.io/badge/streamlit-app-1B3DFF?style=flat-square" alt="Streamlit"/>
+<a href="https://valueatriskmethod.streamlit.app/"><img src="https://img.shields.io/badge/demo-live-00B870?style=flat-square" alt="Live demo"/></a>
+<br/>
+<sub><a href="#what-it-does">What it does</a> · <a href="#demo">Demo</a> · <a href="#install">Install</a> · <a href="#use">Use</a> · <a href="#how-it-works">How it works</a> · <a href="#license">License</a></sub>
+</div>
 
+---
 
-## Overview
-The Multiple-Equity Portfolio Value at Risk (VaR) Calculator is an interactive, web-based tool designed for financial analysts, portfolio managers, and investment enthusiasts. This application allows users to dynamically assess the risk associated with a portfolio composed of various stocks, providing insights into potential financial exposure under adverse market conditions.
+## What it does
+A Streamlit app that prices Value at Risk for a multi-stock portfolio, computed three ways:
 
-## Features
-- **Dynamic Stock Selection**: Users can select up to 10 different stocks to include in their portfolio, specifying the weight of each stock to reflect its proportion in the overall investment strategy.
-- **Real-Time Data Fetching**: The calculator integrates with a financial data API to retrieve real-time historical stock prices for the specified date range, ensuring accurate and up-to-date risk assessment.
-- **Customizable Risk Metrics**: It supports various risk measurement techniques, including Historical, Variance-Covariance, and Monte Carlo simulations, offering users the flexibility to choose the method that best fits their risk management needs.
-- **Interactive Visualizations**: The application provides graphical representations of portfolio returns over time, helping users visualize the performance and risk profile of their investments.
-- **Precise Control Over Parameters**: Users can define the initial portfolio value, select the confidence level for risk assessment, and adjust the weight of individual stocks to simulate different investment scenarios.
+- **Historical**: takes the empirical percentile of realized daily returns, no distributional assumption.
+- **Variance-covariance**: assumes normally distributed returns, derives VaR from the mean, standard deviation, and a z-score.
+- **Monte Carlo**: draws 10,000 simulated returns from a fitted normal distribution and takes the percentile of the simulated path.
 
-## Technologies
-- **Streamlit**: Used for creating the intuitive and interactive web interface that powers our application.
-- **Python**: The backbone of our tool, providing the computational logic and data handling required to calculate Value at Risk.
-- **Matplotlib** and **SciPy**: Utilized for generating plots and statistical functions needed to compute VaR.
-- **Requests**: Allows the application to communicate with external financial data APIs to fetch necessary stock price data.
+Pick up to 10 tickers, set their weights, a date range, and a confidence level; the app fetches historical prices, builds a weighted return series, and reports VaR in dollar terms against your stated portfolio value.
 
-## Usage
-This tool is particularly useful for:
-- **Risk Assessment**: Quickly calculate the potential loss in a given portfolio, aiding in making informed risk management decisions.
-- **Investment Strategy Testing**: Experiment with different portfolio configurations to understand how changes in stock selection and weight can affect the risk profile.
-- **Educational Purposes**: Serve as a practical example for those learning about financial risk management, portfolio analysis, and related concepts.
+## Demo
+Live: [valueatriskmethod.streamlit.app](https://valueatriskmethod.streamlit.app/)
 
-## Getting Started
-To get started with the Multiple-Equity Portfolio Value at Risk (VaR) Calculator, clone this repository and follow the setup instructions in the README. You will need an API key from [Financial Modeling Prep](https://financialmodelingprep.com/developer/docs/) to fetch stock data.
+## Install
+```bash
+git clone https://github.com/sarthakguptaquant/portfolio-var.git
+cd portfolio-var
+pip install -r requirements.txt
+```
 
-## Contributing
-Contributions are welcome! Whether it's refining the calculations, enhancing the interface, or adding new features, we encourage you to fork this repository and share your ideas through pull requests.
+You will also need an API key from [Financial Modeling Prep](https://financialmodelingprep.com/developer/docs/) to fetch stock price history.
 
-### How to Contribute
-1. **Fork the Repository**: Start by forking the repository to your GitHub account.
-2. **Clone the Forked Repo**: Clone the forked repository to your local machine.
-3. **Create a New Branch**: Create a new branch to make your changes.
-4. **Make Your Changes**: Add new features or make improvements to existing ones.
-5. **Commit Changes**: Commit your changes with a clear and descriptive commit message.
-6. **Push Changes**: Push your changes to your fork on GitHub.
-7. **Submit a Pull Request**: Open a pull request from your fork to the main repository.
+## Use
+```bash
+streamlit run Model_Code.py
+```
+Then, in the app:
+1. Set an initial portfolio value and pick up to 10 tickers with weights summing to 100%.
+2. Choose a start and end date, click "Fetch Data and Calculate Statistics."
+3. Pick a VaR method and confidence level, click "Calculate VaR."
 
-We appreciate contributions of all kinds, from bug fixes to feature additions, and even updates to documentation. Every bit helps in making this tool more useful and efficient!
+## How it works
+
+<details>
+<summary><strong>Return construction</strong></summary>
+
+Daily returns are computed per stock from fetched closing prices, scaled by each stock's weight, and concatenated into a single weighted return series that all three VaR methods operate on.
+</details>
+
+<details>
+<summary><strong>Method table</strong></summary>
+
+| Method | Key assumption / tradeoff |
+|---|---|
+| Historical | No distribution assumed, but only as good as the sample window: thin history means a noisy percentile. |
+| Variance-covariance | Fast, closed-form, and wrong whenever returns are fat-tailed or skewed, which equity returns usually are. |
+| Monte Carlo | Same normality assumption as variance-covariance, just resampled 10,000 times, so it inherits the same blind spot to tail risk. |
+</details>
 
 ## License
-This project is open source and available under the [MIT License](LICENSE).
+No LICENSE file is present in this repository; treat the code as all-rights-reserved by default until one is added.
 
-## Support
-If you have any questions or run into issues, please file an issue on the GitHub repository, and we will try to address it as soon as possible.
+---
 
-Thank you for trying out the Multiple-Equity Portfolio Value at Risk (VaR) Calculator. We hope it serves as a valuable tool in your financial analysis toolkit!
-
+<div align="center">
+<img src="assets/sg-mark.svg" height="20" alt="SG"/>
+<br/>
+<sub><a href="https://github.com/sarthakguptaquant">sarthakguptaquant</a> · AI x quantitative finance · <a href="https://sarthakgpt.com">sarthakgpt.com</a></sub>
+</div>
