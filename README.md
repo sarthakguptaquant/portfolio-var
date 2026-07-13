@@ -4,6 +4,7 @@
 <img src="https://img.shields.io/badge/python-3.11-1B3DFF?style=flat-square" alt="Python 3.11"/>
 <img src="https://img.shields.io/badge/streamlit-app-1B3DFF?style=flat-square" alt="Streamlit"/>
 <a href="https://valueatriskmethod.streamlit.app/"><img src="https://img.shields.io/badge/demo-live-00B870?style=flat-square" alt="Live demo"/></a>
+<img src="https://img.shields.io/badge/License-MIT-1B3DFF?style=flat-square" alt="MIT License"/>
 <br/>
 <sub><a href="#what-it-does">What it does</a> · <a href="#demo">Demo</a> · <a href="#install">Install</a> · <a href="#use">Use</a> · <a href="#how-it-works">How it works</a> · <a href="#license">License</a></sub>
 </div>
@@ -59,7 +60,8 @@ Daily returns are computed per stock from fetched closing prices, scaled by each
 </details>
 
 ## License
-No LICENSE file is present in this repository; treat the code as all-rights-reserved by default until one is added.
+
+[MIT](LICENSE).
 
 ---
 
