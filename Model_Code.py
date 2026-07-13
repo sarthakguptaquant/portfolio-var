@@ -1,3 +1,4 @@
+import os
 import streamlit as st
 import numpy as np
 import requests
@@ -24,7 +25,15 @@ def fetch_stock_data(stock_name, start_date, end_date, API_KEY):
 image_url = "https://i.postimg.cc/jd3b7X91/Screenshot-2024-05-10-at-12-33-02-AM.png"
 st.image(image_url, use_column_width=True)
 
-API_KEY = '0uTB4phKEr4dHcB2zJMmVmKUcywpkxDQ'  # API key for data fetching
+# Financial Modeling Prep API key. Set FMP_API_KEY as an environment variable
+# or in .streamlit/secrets.toml; never hardcode it in source.
+API_KEY = os.environ.get("FMP_API_KEY", "")
+try:
+    API_KEY = st.secrets.get("FMP_API_KEY", API_KEY)
+except Exception:
+    pass
+if not API_KEY:
+    st.warning("Set FMP_API_KEY (environment variable or Streamlit secret) to fetch data.")
 
 # Input field for initial portfolio value
 portfolio_value = st.number_input("Enter Initial Portfolio Value (in USD):", min_value=0.0, value=100000.0, step=1000.0, format="%.2f")
